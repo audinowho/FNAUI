@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Threading;
+using System.Collections.Generic;
 #endregion
 
 namespace ExampleFNA
@@ -16,7 +17,13 @@ namespace ExampleFNA
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
+        public static List<(Vector2, byte)> pts = new List<(Vector2, byte)>();
+        public static int lum = 255;
+
+        MouseState prevState;
+        Texture2D pixel;
+
         public GameBase()
             : base()
         {
@@ -27,6 +34,7 @@ namespace ExampleFNA
             IsMouseVisible = true;
             Window.Title = "Example";
             Content.RootDirectory = "Content";
+            prevState = new MouseState();
         }
 
         /// <summary>
@@ -37,6 +45,8 @@ namespace ExampleFNA
         /// </summary>
         protected override void Initialize()
         {
+            pixel = getBasicTexture();
+
             base.Initialize();
         }
 
@@ -69,6 +79,14 @@ namespace ExampleFNA
         {
             //update here
             base.Update(gameTime);
+
+            MouseState state = Mouse.GetState();
+            Vector2 mouseVec = new Vector2(state.X, state.Y);
+
+            if (state.LeftButton == ButtonState.Pressed && prevState.LeftButton == ButtonState.Released)
+                pts.Add((mouseVec, (byte)lum));
+
+            prevState = state;
         }
 
         /// <summary>
@@ -83,9 +101,20 @@ namespace ExampleFNA
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, matrix);
 
             //draw here
+            foreach ((Vector2, byte) vec in pts)
+                spriteBatch.Draw(pixel, new Rectangle((int)vec.Item1.X, (int)vec.Item1.Y, 8, 8), null, new Color(vec.Item2, vec.Item2, vec.Item2, 255));
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private Texture2D getBasicTexture()
+        {
+            Texture2D defaultTex = new Texture2D(graphics.GraphicsDevice, 1, 1);
+            Color[] color = new Color[1];
+            color[0] = Color.White;
+            defaultTex.SetData<Color>(0, new Rectangle(0, 0, 1, 1), color, 0, color.Length);
+            return defaultTex;
         }
     }
 }
