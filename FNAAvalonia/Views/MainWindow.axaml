@@ -6,7 +6,8 @@
         mc:Ignorable="d"
         x:Class="FNAAvalonia.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="FNAAvalonia" Width="200" Height="50">
+        Title="FNAAvalonia" Width="200" Height="50"
+        Opened="Window_Loaded" Closed="Window_Closed">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>

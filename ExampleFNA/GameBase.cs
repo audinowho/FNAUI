@@ -32,7 +32,7 @@ namespace ExampleFNA
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
             IsMouseVisible = true;
-            Window.Title = "Example";
+            Window.Title = "FNA Example";
             Content.RootDirectory = "Content";
             prevState = new MouseState();
         }

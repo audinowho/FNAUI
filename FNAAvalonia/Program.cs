@@ -17,27 +17,7 @@ namespace FNAAvalonia
         public static void Main(string[] args)
         {
             AppBuilder builder = BuildAvaloniaApp();
-            builder.SetupWithoutStarting();
-
-            Avalonia.Controls.Window window = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
-            window.Show();
-
-            try
-            {
-
-                using (GameBase game = new GameBase())
-                    game.Run();
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            //builder.StartWithClassicDesktopLifetime(args);
+            builder.StartWithClassicDesktopLifetime(args);
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
