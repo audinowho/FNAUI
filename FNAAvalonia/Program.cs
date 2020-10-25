@@ -6,6 +6,8 @@ using Avalonia.ReactiveUI;
 using ExampleFNA;
 using FNAAvalonia.ViewModels;
 using FNAAvalonia.Views;
+using System.Reflection;
+using Microsoft.Xna.Framework;
 
 namespace FNAAvalonia
 {
@@ -16,6 +18,7 @@ namespace FNAAvalonia
         // yet and stuff might break.
         public static void Main(string[] args)
         {
+            InitDllMap();
             AppBuilder builder = BuildAvaloniaApp();
             builder.StartWithClassicDesktopLifetime(args);
         }
@@ -26,5 +29,12 @@ namespace FNAAvalonia
                 .UsePlatformDetect()
                 .LogToDebug()
                 .UseReactiveUI();
+
+        public static void InitDllMap()
+        {
+            CoreDllMap.Init();
+            Assembly fnaAssembly = Assembly.GetAssembly(typeof(Game));
+            CoreDllMap.Register(fnaAssembly);
+        }
     }
 }
