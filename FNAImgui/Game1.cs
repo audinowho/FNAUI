@@ -1,5 +1,4 @@
-using Nez;
-using Nez.ImGuiTools;
+using FNAImgui.ImGuiTools;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;

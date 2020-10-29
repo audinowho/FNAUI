@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Num = System.Numerics;
 
 
-namespace Nez.ImGuiTools
+namespace FNAImgui.ImGuiTools
 {
 	class CoreWindow
 	{
@@ -39,11 +39,14 @@ namespace Nez.ImGuiTools
 
 			NezImGui.SmallVerticalSpace();
 
+			bool exitOnEscapeKeypress = false;
+			bool pauseOnFocusLost = false;
+			bool debugRenderEnabled = false;
 			if (ImGui.CollapsingHeader("Core Settings", ImGuiTreeNodeFlags.DefaultOpen))
 			{
-				ImGui.Checkbox("exitOnEscapeKeypress", ref Core.ExitOnEscapeKeypress);
-				ImGui.Checkbox("pauseOnFocusLost", ref Core.PauseOnFocusLost);
-				ImGui.Checkbox("debugRenderEnabled", ref Core.DebugRenderEnabled);
+				ImGui.Checkbox("exitOnEscapeKeypress", ref exitOnEscapeKeypress);
+				ImGui.Checkbox("pauseOnFocusLost", ref pauseOnFocusLost);
+				ImGui.Checkbox("debugRenderEnabled", ref debugRenderEnabled);
 			}
 
 			if (ImGui.CollapsingHeader("Core.defaultSamplerState", ImGuiTreeNodeFlags.DefaultOpen))

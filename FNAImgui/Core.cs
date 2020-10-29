@@ -6,29 +6,10 @@ using System.Collections;
 using System.Diagnostics;
 
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Nez.ImGui")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Nez.Persistence")]
-
-
-namespace Nez
+namespace FNAImgui
 {
 	public class Core : Game
 	{
-		/// <summary>
-		/// enables/disables if we should quit the app when escape is pressed
-		/// </summary>
-		public static bool ExitOnEscapeKeypress = true;
-
-		/// <summary>
-		/// enables/disables pausing when focus is lost. No update or render methods will be called if true when not in focus.
-		/// </summary>
-		public static bool PauseOnFocusLost = true;
-
-		/// <summary>
-		/// enables/disables debug rendering
-		/// </summary>
-		public static bool DebugRenderEnabled = false;
-
 		/// <summary>
 		/// global access to the graphicsDevice
 		/// </summary>
@@ -59,16 +40,6 @@ namespace Nez
 		public SpriteBatch SpriteBatch;
 
 		/// <summary>
-		/// clear color that is used in preRender to clear the screen
-		/// </summary>
-		public Color ClearColor = Color.CornflowerBlue;
-
-		/// <summary>
-		/// clear color for the final render of the RenderTarget to the framebuffer
-		/// </summary>
-		public Color LetterboxColor = Color.Black;
-
-		/// <summary>
 		/// this gets setup based on the resolution policy and is used for the final blit of the RenderTarget
 		/// </summary>
 		Rectangle _finalRenderDestinationRect;
@@ -79,7 +50,7 @@ namespace Nez
 		public int Width { get { return graphicsManager.PreferredBackBufferWidth; } }
 		public int Height { get { return graphicsManager.PreferredBackBufferHeight; } }
 
-		public Core(int width = 1280, int height = 720, bool isFullScreen = false, string windowTitle = "Nez", string contentDirectory = "Content")
+		public Core(int width = 1280, int height = 720)
 		{
 
 			_instance = this;
@@ -88,29 +59,16 @@ namespace Nez
 			{
 				PreferredBackBufferWidth = width,
 				PreferredBackBufferHeight = height,
-				IsFullScreen = isFullScreen,
+				IsFullScreen = false,
 				SynchronizeWithVerticalRetrace = true
 			};
 			graphicsManager.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
 
-			base.Content.RootDirectory = contentDirectory;
+			base.Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 			IsFixedTimeStep = false;
 
 		}
-
-
-		#region Passthroughs to Game
-
-		public new static void Exit()
-		{
-			((Game) _instance).Exit();
-		}
-
-		#endregion
-
-
-		#region Game overides
 
 		protected override void Initialize()
 		{
@@ -118,9 +76,9 @@ namespace Nez
 
 			// prep the default Graphics system
 			GraphicsDevice = base.GraphicsDevice;
-			SpriteBatch = new SpriteBatch(Core.GraphicsDevice);
+			SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-			SetDesignResolution(Width, Height);
+			UpdateResolutionScaler();
 
 			// prep our render textures
 			UpdateResolutionScaler();
@@ -129,21 +87,8 @@ namespace Nez
 
 		protected override void Update(GameTime gameTime)
 		{
-			if (PauseOnFocusLost && !IsActive)
-			{
-				SuppressDraw();
-				return;
-			}
-
 			// update all our systems and global managers
 			Input.Update();
-
-			if (ExitOnEscapeKeypress &&
-			    (Input.IsKeyDown(Keys.Escape)))
-			{
-				base.Exit();
-				return;
-			}
 
 			Manager.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -151,26 +96,11 @@ namespace Nez
 
 		protected override void Draw(GameTime gameTime)
 		{
-			if (PauseOnFocusLost && !IsActive)
-				return;
-
 			GraphicsDevice.SetRenderTarget(_sceneRenderTarget);
-			GraphicsDevice.Clear(ClearColor);
+			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			var currentRenderTarget = _sceneRenderTarget;
-			Manager.HandleFinalRender(null, LetterboxColor, currentRenderTarget, _finalRenderDestinationRect, Core.DefaultSamplerState);
-		}
-
-		protected override void OnExiting(object sender, EventArgs args)
-		{
-			base.OnExiting(sender, args);
-		}
-
-		#endregion
-
-		public void SetDesignResolution(int width, int height)
-		{
-			UpdateResolutionScaler();
+			Manager.HandleFinalRender(null, Color.Black, currentRenderTarget, _finalRenderDestinationRect, DefaultSamplerState);
 		}
 
 		void UpdateResolutionScaler()
@@ -195,7 +125,7 @@ namespace Nez
 			// resize our RenderTargets
 			if (_sceneRenderTarget != null)
 				_sceneRenderTarget.Dispose();
-			_sceneRenderTarget = new RenderTarget2D(Core.GraphicsDevice, renderTargetWidth, renderTargetHeight, false, graphicsManager.PreferredBackBufferFormat, graphicsManager.PreferredDepthStencilFormat,
+			_sceneRenderTarget = new RenderTarget2D(GraphicsDevice, renderTargetWidth, renderTargetHeight, false, graphicsManager.PreferredBackBufferFormat, graphicsManager.PreferredDepthStencilFormat,
 				0, RenderTargetUsage.PreserveContents);
 
 		}

@@ -4,7 +4,7 @@ using ImGuiNET;
 using Num = System.Numerics;
 
 
-namespace Nez.ImGuiTools
+namespace FNAImgui.ImGuiTools
 {
 	public static class NezImGui
 	{

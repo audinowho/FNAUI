@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace Nez.ImGuiTools
+namespace FNAImgui.ImGuiTools
 {
 	public class ImGuiManager : GlobalManager
 	{
