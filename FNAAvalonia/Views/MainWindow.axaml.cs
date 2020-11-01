@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;
 using ExampleFNA;
-using System.Threading;
+using Avalonia.Threading;
 
 namespace FNAAvalonia.Views
 {
@@ -22,7 +22,7 @@ namespace FNAAvalonia.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void StartGame()
+        private void LoadGame()
         {
             using (GameBase game = new GameBase())
                 game.Run();
@@ -31,8 +31,7 @@ namespace FNAAvalonia.Views
 
         public void Window_Loaded(object sender, EventArgs e)
         {
-            Thread thread = new Thread(StartGame);
-            thread.Start();
+            Dispatcher.UIThread.Post(LoadGame);
         }
 
         public void Window_Closed(object sender, EventArgs e)
