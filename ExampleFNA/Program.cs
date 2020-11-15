@@ -2,9 +2,11 @@
 using System;
 using System.Threading;
 using System.Globalization;
+using System.Reflection;
+using Microsoft.Xna.Framework;
 #endregion
 
-namespace PMDOrigins
+namespace ExampleFNA
 {
     /// <summary>
     /// The main class.
@@ -17,7 +19,16 @@ namespace PMDOrigins
         [STAThread]
         static void Main()
         {
+            InitDllMap();
+            using (GameBase game = new GameBase())
+                game.Run();
+        }
 
+        public static void InitDllMap()
+        {
+            CoreDllMap.Init();
+            Assembly fnaAssembly = Assembly.GetAssembly(typeof(Game));
+            CoreDllMap.Register(fnaAssembly);
         }
     }
 }

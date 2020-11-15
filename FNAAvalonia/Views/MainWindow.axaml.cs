@@ -22,16 +22,18 @@ namespace FNAAvalonia.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void LoadGame()
+
+        public static void LoadGame()
         {
             using (GameBase game = new GameBase())
                 game.Run();
         }
 
-
         public void Window_Loaded(object sender, EventArgs e)
         {
-            Dispatcher.UIThread.Post(LoadGame);
+            if (Design.IsDesignMode)
+                return;
+            Dispatcher.UIThread.Post(LoadGame, DispatcherPriority.Background);
         }
 
         public void Window_Closed(object sender, EventArgs e)

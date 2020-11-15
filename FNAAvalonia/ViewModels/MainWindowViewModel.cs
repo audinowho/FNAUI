@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using ExampleFNA;
 using ReactiveUI;
+using Avalonia.Threading;
 
 namespace FNAAvalonia.ViewModels
 {
@@ -14,7 +15,6 @@ namespace FNAAvalonia.ViewModels
             get { return GameBase.lum; }
             set { this.RaiseAndSetIfChanged(ref GameBase.lum, value); }
         }
-
 
         public void btnClear_Click()
         {

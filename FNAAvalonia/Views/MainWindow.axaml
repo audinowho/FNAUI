@@ -19,6 +19,6 @@
     <ColumnDefinition/>
   </Grid.ColumnDefinitions>
   <NumericUpDown Name="nudLevel" Value="{Binding Intensity}" Minimum="0" Maximum="255" Margin="4" Grid.Column="0"></NumericUpDown>
-  <Button Name="btnRollSkill" Command="{Binding btnClear_Click}" Margin="4" Grid.Column="1">Clear</Button>
+    <Button Name="btnRollSkill" Command="{Binding btnClear_Click}" Margin="4" Grid.Column="1">Clear</Button>
   </Grid>
 </Window>
