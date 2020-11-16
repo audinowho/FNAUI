@@ -8,6 +8,7 @@ using FNAAvalonia.ViewModels;
 using FNAAvalonia.Views;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using SDL2;
 
 namespace FNAAvalonia
 {
@@ -35,6 +36,8 @@ namespace FNAAvalonia
             CoreDllMap.Init();
             Assembly fnaAssembly = Assembly.GetAssembly(typeof(Game));
             CoreDllMap.Register(fnaAssembly);
+            //load SDL first before FNA3D to sidestep multiple dylibs problem
+            SDL.SDL_GetPlatform();
         }
     }
 }

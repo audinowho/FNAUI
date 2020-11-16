@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using System.Text;
+using SDL2;
 #endregion
 
 namespace ExampleFNA
@@ -54,6 +55,8 @@ namespace ExampleFNA
             CoreDllMap.Init();
             Assembly fnaAssembly = Assembly.GetAssembly(typeof(Game));
             CoreDllMap.Register(fnaAssembly);
+            //load SDL first before FNA3D to sidestep multiple dylibs problem
+            SDL.SDL_GetPlatform();
         }
     }
 }
